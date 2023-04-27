@@ -1,6 +1,7 @@
 package nl.abelkrijgtalles.easygui.gui;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -128,9 +129,24 @@ public class GUI {
 
     public static Inventory addBorder(Inventory GUI) {
 
+        return nl.abelkrijgtalles.easygui.gui.GUI.addBorder(GUI, new ItemStack(Material.LIGHT_GRAY_STAINED_GLASS_PANE));
+
     }
 
     public static Inventory addBorder(Inventory GUI, ItemStack borderItem) {
+
+        if (GUI.getSize() % 9 != 0) {
+            Bukkit.getLogger().warning(GUI.getSize() + " isn't dividable by 9.");
+            throw new IllegalArgumentException();
+        }
+
+        if (GUI.getSize() >= 9 * 3) {
+            for (int i = 0; i < 9; i++) {
+                GUI.setItem(i, borderItem);
+            }
+        }
+
+        return GUI;
 
     }
 
