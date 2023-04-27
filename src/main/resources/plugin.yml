@@ -1,0 +1,7 @@
+name: EasyGUI
+version: '${project.version}'
+main: nl.abelkrijgtalles.easygui.EasyGUI
+api-version: 1.19
+authors: [Abelpro678]
+description: An easy way to create a gui for Minecraft.
+website: https://github.com/Abelkrijgtalles/easygui
