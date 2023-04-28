@@ -129,7 +129,7 @@ public class GUI {
 
     public static Inventory addBorder(Inventory GUI) {
 
-        return nl.abelkrijgtalles.easygui.gui.GUI.addBorder(GUI, new ItemStack(Material.LIGHT_GRAY_STAINED_GLASS_PANE));
+        return nl.abelkrijgtalles.easygui.gui.GUI.addBorder(GUI, new ItemStack(Material.GRAY_STAINED_GLASS_PANE));
 
     }
 
