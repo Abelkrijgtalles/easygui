@@ -1,5 +1,6 @@
 package nl.abelkrijgtalles.easygui.gui;
 
+import nl.abelkrijgtalles.easygui.util.Defaults;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -17,12 +18,10 @@ public class GUI {
      */
 
     public static Inventory create(Player player, int size, String title) {
-        if (size % 9 != 0) {
-            Bukkit.getLogger().warning(size + " isn't dividable by 9.");
-            throw new IllegalArgumentException();
-        }
+        Inventory GUI = Bukkit.createInventory(player, size, title);
+        nl.abelkrijgtalles.easygui.gui.GUI.checkGUI(GUI);
 
-        return Bukkit.createInventory(player, size, title);
+        return GUI;
     }
 
     /**
@@ -127,27 +126,67 @@ public class GUI {
         return GUI;
     }
 
+    /**
+     * Adds a border around the given GUI.
+     * @param GUI The GUI to put a border around.
+     * @return The GUI with a border
+     */
+
     public static Inventory addBorder(Inventory GUI) {
 
-        return nl.abelkrijgtalles.easygui.gui.GUI.addBorder(GUI, new ItemStack(Material.GRAY_STAINED_GLASS_PANE));
+        return nl.abelkrijgtalles.easygui.gui.GUI.addBorder(GUI, Defaults.getDefaultBorderItem());
 
     }
 
+    /**
+     * Adds a border around the given GUI.
+     * @param GUI The GUI to put a border around.
+     * @param borderItem The item for the border.
+     * @return The GUI with a border
+     */
+
     public static Inventory addBorder(Inventory GUI, ItemStack borderItem) {
 
-        if (GUI.getSize() % 9 != 0) {
-            Bukkit.getLogger().warning(GUI.getSize() + " isn't dividable by 9.");
-            throw new IllegalArgumentException();
-        }
+        nl.abelkrijgtalles.easygui.gui.GUI.checkGUI(GUI);
 
-        if (GUI.getSize() >= 9 * 3) {
+        int size = GUI.getSize();
+        int rows = size / 9;
+        int lastRow = (rows - 1) * 9;
+
+        if (size >= 9 * 3) {
             for (int i = 0; i < 9; i++) {
                 GUI.setItem(i, borderItem);
+            }
+            for (int i = 0; i < rows - 2; i++) {
+                int firstRow = (i + 1) * 9;
+
+                GUI.setItem(firstRow, borderItem);
+                GUI.setItem(firstRow + 8, borderItem);
+            }
+            for (int i = lastRow - 1; i < size; i++) {
+
+                if (i == lastRow + 4) {
+                    GUI.setItem(i, Defaults.getExitItem());
+                } else {
+                    GUI.setItem(i, borderItem);
+                }
             }
         }
 
         return GUI;
 
+    }
+
+    /**
+     * Checks for certain things in the given GUI. If they are not present, then it wil throw an exception. Current list of checks: If the GUI-size dividable is by 9.
+     * @param GUI The GUI to check.
+     */
+
+    public static void checkGUI(Inventory GUI) {
+        if (GUI.getSize() % 9 != 0) {
+            Bukkit.getLogger().warning(GUI.getSize() + " isn't dividable by 9.");
+            throw new IllegalArgumentException();
+        }
     }
 
 }
